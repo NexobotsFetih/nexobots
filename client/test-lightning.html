@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmospheric Effects Test</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: monospace; }
+        #test-container { padding: 50px; text-align: center; }
+        .lightning-text { 
+            font-size: 72px; 
+            transition: all 0.1s;
+            text-shadow: 0 0 15px rgba(168,85,247,0.8);
+        }
+        .lightning-text.flash {
+            text-shadow: 0 0 50px rgba(255,255,255,0.9);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div id="test-container">
+        <h1 class="lightning-text" id="title">NEXOBOTS</h1>
+        <p>Lightning Test: Text should flash every 2-8 seconds</p>
+        <p id="status">Waiting for first flash...</p>
+    </div>
+    
+    <script>
+        const title = document.getElementById('title');
+        const status = document.getElementById('status');
+        let flashCount = 0;
+        
+        function triggerLightning() {
+            title.classList.add('flash');
+            flashCount++;
+            status.textContent = `Flash #${flashCount} - Working!`;
+            
+            setTimeout(() => {
+                title.classList.remove('flash');
+            }, 100 + Math.random() * 200);
+            
+            const nextStrike = Math.random() * 6000 + 2000;
+            setTimeout(triggerLightning, nextStrike);
+        }
+        
+        setTimeout(triggerLightning, 2000);
+    </script>
+</body>
+</html>

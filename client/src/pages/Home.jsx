@@ -1,68 +1,63 @@
-import { useState } from 'react';
-import ServiceCard from '../components/ServiceCard';
-import { useNavigate } from 'react-router-dom';
+import { Experience } from '../components/Canvas/Experience';
+import { AboutSection } from '../components/AboutSection';
+import { ArsenalSection } from '../components/ArsenalSection';
+import { MediaSection } from '../components/MediaSection';
+import { DownloadSection } from '../components/DownloadSection';
+import { LightningText } from '../components/LightningText';
+import { motion } from 'framer-motion';
 
-const SERVICES = [
-    { id: 1, name: 'Bronze Package', price: 9.99, description: 'Basic item set to get you started.' },
-    { id: 2, name: 'Silver Package', price: 29.99, description: 'Advanced items for serious players.' },
-    { id: 3, name: 'Gold Package', price: 99.99, description: 'Ultimate domination kit with rare items.' },
-];
-
-const Home = () => {
-    const [selectedService, setSelectedService] = useState(null);
-    const navigate = useNavigate();
-
-    const handleAddToCart = () => {
-        if (selectedService) {
-            // In a real app, dispatch to a global cart store
-            console.log('Added to cart:', selectedService);
-            navigate('/payment-chat', { state: { service: selectedService } });
-        }
-    };
-
+export const Home = () => {
     return (
-        <div>
-            {/* Hero Section */}
-            <section style={{ textAlign: 'center', padding: '5rem 0' }}>
-                <h1 style={{ fontSize: '3.5rem', background: 'linear-gradient(to right, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    Dominate Fetih Altınçağ
-                </h1>
-                <p style={{ fontSize: '1.25rem', color: '#94a3b8', maxWidth: '600px', margin: '0 auto 2rem' }}>
-                    Premium service packages delivered manually by experts. Secure, fast, and reliable.
-                </p>
-                <a href="#services" className="btn-primary" style={{ fontSize: '1.1rem' }}>Get Started</a>
+        <div className="w-full min-h-screen text-white selection:bg-neon-purple selection:text-white overflow-x-hidden">
+
+            {/* HERO SECTION */}
+            <section className="relative w-full h-screen">
+                <Experience />
+
+                <main className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 p-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="text-center bg-black/10 backdrop-blur-sm border border-white/5 rounded-[2rem] p-8 md:px-16 md:py-32 shadow-[0_0_50px_rgba(0,0,0,0.2)] w-full max-w-7xl mx-auto"
+                    >
+                        <LightningText text="project : Z" />
+                        <p className="text-xl md:text-2xl font-tech text-cyber-cyan tracking-[0.5em] mb-10 mt-12 opacity-90">
+                            SYSTEM <span className="text-mystic-gold">ERROR</span>
+                        </p>
+
+                        <motion.button
+                            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+                            whileHover={{ scale: 1.1, backgroundColor: "rgba(168, 85, 247, 0.5)", borderColor: "#a855f7" }}
+                            whileTap={{ scale: 0.95 }}
+                            className="pointer-events-auto mt-8 px-10 py-4 bg-black/80 backdrop-blur-md border-2 border-neon-purple/70 text-neon-purple font-tech text-xl uppercase tracking-[0.2em] relative overflow-hidden group shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.6)] transition-all cursor-pointer z-50"
+                        >
+                            <span className="relative z-10">BAŞLAT</span>
+                            <div className="absolute inset-0 bg-neon-purple opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        </motion.button>
+                    </motion.div>
+                </main>
+
+                {/* Visual Noise for Hero */}
+                <div className="absolute inset-0 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+
+                {/* Scroll Indicator */}
+                <motion.div
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-cyber-cyan font-tech text-sm opacity-70 pointer-events-none"
+                >
+                    ŞİFREYİ ÇÖZMEK İÇİN KAYDIR
+                    <div className="w-[1px] h-8 bg-gradient-to-b from-cyber-cyan to-transparent mx-auto mt-2"></div>
+                </motion.div>
             </section>
 
-            {/* Services Section */}
-            <section id="services" style={{ padding: '4rem 0' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: '2rem' }}>Choose Your Package</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    {SERVICES.map(service => (
-                        <ServiceCard
-                            key={service.id}
-                            service={service}
-                            selected={selectedService?.id === service.id}
-                            onSelect={setSelectedService}
-                        />
-                    ))}
-                </div>
+            {/* SECTIONS */}
+            <AboutSection />
+            <ArsenalSection />
+            <MediaSection />
+            <DownloadSection />
 
-                {selectedService && (
-                    <div style={{ textAlign: 'center', marginTop: '3rem', position: 'sticky', bottom: '2rem' }}>
-                        <div style={{ background: '#1e293b', padding: '1rem 2rem', borderRadius: '1rem', display: 'inline-flex', alignItems: 'center', gap: '2rem', border: '1px solid #3b82f6', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)' }}>
-                            <div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Selected Package</div>
-                                <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{selectedService.name} - ${selectedService.price}</div>
-                            </div>
-                            <button onClick={handleAddToCart} className="btn-primary">
-                                Proceed to Payment
-                            </button>
-                        </div>
-                    </div>
-                )}
-            </section>
         </div>
     );
 };
-
-export default Home;
